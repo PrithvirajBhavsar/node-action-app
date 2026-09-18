@@ -4,7 +4,7 @@ const PORT = 3000;
 
 // Define a basic route for the root URL
 app.get('/', (req, res) => {
-    res.send('Hello World from Express! Prithvi');
+    res.send('Hello World from Express! Prithviraj');
 });
 
 // Start the server
