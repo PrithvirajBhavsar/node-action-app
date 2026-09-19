@@ -21,11 +21,19 @@ router.get('/health', (req, res) => {
       ? connectionError.message || 'Unknown MongoDB connection error.'
       : 'Database is not connected.';
 
+  const mongoUri = process.env.MONGODB_URI || null;
+  const sanitizedMongoUri = mongoUri
+    ? mongoUri.includes('@')
+      ? mongoUri.replace(/\/\/([^:]+):([^@]+)@/, '//***:***@')
+      : mongoUri
+    : null;
+
   const connectionInfo = {
     status: isConnected ? 'ok' : 'error',
     mongo: stateMap[readyState] || 'unknown',
     reason,
     readyState,
+    connectionString: sanitizedMongoUri,
     database: mongoose.connection.name || null,
     host: mongoose.connection.host || null,
     port: mongoose.connection.port || null,

@@ -2,12 +2,25 @@ require('dotenv').config();
 
 const app = require('./src/app');
 
-const PORT = process.env.PORT;
+const DEFAULT_PORT = 3000;
+const portFromEnv = Number(process.env.PORT || DEFAULT_PORT);
 
-if (!PORT) {
-  throw new Error('PORT is not defined in the .env file');
-}
+const startServer = (port) => {
+  const server = app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+  });
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
-});
+  server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE') {
+      const nextPort = port + 1;
+      console.warn(`Port ${port} is already in use. Retrying on port ${nextPort}...`);
+      startServer(nextPort);
+      return;
+    }
+
+    console.error('Failed to start server:', error.message);
+    process.exit(1);
+  });
+};
+
+startServer(portFromEnv);
