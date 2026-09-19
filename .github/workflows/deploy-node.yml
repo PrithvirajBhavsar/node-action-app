@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Check if repository folder exists; if not, clone it. Otherwise, pull latest changes.
+            # Check if repo directory exists; if not, clone it. Otherwise, pull latest changes.
             if [ -d "/home/ubuntu/app" ]; then
               cd /home/ubuntu/app
               git pull origin main
@@ -49,7 +49,7 @@ jobs:
             # Pull the fresh app image from Docker Hub
             docker compose pull app
             
-            # Recreate containers cleanly using docker-compose
+            # Start/recreate containers cleanly using docker-compose
             docker compose up -d --remove-orphans
 
             # Ensure Nginx is running
