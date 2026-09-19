@@ -1,11 +1,18 @@
-const { getAllUsers, getUser, addUser, editUser, removeUser } = require('../services/users.service');
+const {
+  getAllUsers,
+  getUser,
+  addUser,
+  editUser,
+  removeUser,
+} = require('../services/users.service');
 
-const getUsers = (req, res) => {
-  res.json(getAllUsers());
+const getUsers = async (req, res) => {
+  const users = await getAllUsers();
+  return res.json(users);
 };
 
-const getUserById = (req, res) => {
-  const user = getUser(req.params.id);
+const getUserById = async (req, res) => {
+  const user = await getUser(req.params.id);
 
   if (!user) {
     return res.status(404).json({ message: 'User not found' });
@@ -14,23 +21,31 @@ const getUserById = (req, res) => {
   return res.json(user);
 };
 
-const createUser = (req, res) => {
-  const user = addUser(req.body);
-  return res.status(201).json(user);
-};
-
-const updateUser = (req, res) => {
-  const updatedUser = editUser(req.params.id, req.body);
-
-  if (!updatedUser) {
-    return res.status(404).json({ message: 'User not found' });
+const createUser = async (req, res) => {
+  try {
+    const user = await addUser(req.body);
+    return res.status(201).json(user);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
   }
-
-  return res.json(updatedUser);
 };
 
-const deleteUser = (req, res) => {
-  const deleted = removeUser(req.params.id);
+const updateUser = async (req, res) => {
+  try {
+    const updatedUser = await editUser(req.params.id, req.body);
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.json(updatedUser);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  const deleted = await removeUser(req.params.id);
 
   if (!deleted) {
     return res.status(404).json({ message: 'User not found' });
