@@ -10,7 +10,7 @@ app.use(express.json());
 app.use('/api', apiRoutes);
 
 app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to the API' });
+  res.json({ message: 'Welcome to the New API' });
 });
 
 app.use((req, res) => {
