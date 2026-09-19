@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const authRouter = require('./auth.routes');
 const usersRouter = require('./users.routes');
 
 const router = express.Router();
@@ -21,7 +22,7 @@ router.get('/health', (req, res) => {
       ? connectionError.message || 'Unknown MongoDB connection error.'
       : 'Database is not connected.';
 
-  const mongoUri = process.env.MONGODB_URI || null;
+  const mongoUri = process.env.MONGO_URI || null;
   const sanitizedMongoUri = mongoUri
     ? mongoUri.includes('@')
       ? mongoUri.replace(/\/\/([^:]+):([^@]+)@/, '//***:***@')
@@ -53,6 +54,7 @@ router.get('/health', (req, res) => {
   res.status(isConnected ? 200 : 503).json(connectionInfo);
 });
 
+router.use('/auth', authRouter);
 router.use('/users', usersRouter);
 
 module.exports = router;
