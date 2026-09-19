@@ -13,7 +13,7 @@ const getAllUsers = async () => {
     return fallbackUsers;
   }
 
-  return User.find();
+  return User.find().sort({ createdAt: 1 });
 };
 
 const getUser = async (id) => {
@@ -21,7 +21,7 @@ const getUser = async (id) => {
     return fallbackUsers.find((user) => user.id === id) || null;
   }
 
-  return User.findById(id);
+  return User.findOne({ id });
 };
 
 const addUser = async (userData) => {
@@ -35,7 +35,11 @@ const addUser = async (userData) => {
     return newUser;
   }
 
-  const user = new User(userData);
+  const user = new User({
+    id: userData.id || String(Date.now()),
+    ...userData,
+  });
+
   return user.save();
 };
 
@@ -56,7 +60,7 @@ const editUser = async (id, userData) => {
     return fallbackUsers[index];
   }
 
-  return User.findByIdAndUpdate(id, userData, { new: true, runValidators: true });
+  return User.findOneAndUpdate({ id }, userData, { new: true, runValidators: true });
 };
 
 const removeUser = async (id) => {
@@ -71,7 +75,7 @@ const removeUser = async (id) => {
     return true;
   }
 
-  const deletedUser = await User.findByIdAndDelete(id);
+  const deletedUser = await User.findOneAndDelete({ id });
   return !!deletedUser;
 };
 
