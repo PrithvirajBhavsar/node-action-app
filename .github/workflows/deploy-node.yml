@@ -46,10 +46,16 @@ jobs:
               cd app
             fi
             
-            # Pull the fresh app image from Docker Hub
-            docker compose pull app
+            # Stop and remove old containers
+            docker compose down
             
-            # Start/recreate containers cleanly using docker-compose
+            # Pull the absolute latest images (App + Mongo)
+            docker compose pull
+            
+            # Prune dangling/unused images to save disk space
+            docker image prune -f
+            
+            # Start fresh containers
             docker compose up -d --remove-orphans
 
             # Ensure Nginx is running
