@@ -1,13 +1,7 @@
-const express = require('express');
-const app = express();
-const PORT = 3000;
+const app = require('./src/app');
 
-// Define a basic route for the root URL
-app.get('/', (req, res) => {
-    res.send(`Hello World from Express!Let's create apis now`);
-});
+const PORT = process.env.PORT || 3000;
 
-// Start the server
 app.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
+  console.log(`Server is running at http://localhost:${PORT}`);
 });
