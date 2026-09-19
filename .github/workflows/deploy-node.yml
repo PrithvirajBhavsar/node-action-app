@@ -36,14 +36,14 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             # Check if repository folder exists; if not, clone it. Otherwise, pull latest changes.
-            if [ -d "/home/ubuntu/your-app-repo" ]; then
-              cd /home/ubuntu/your-app-repo
+            if [ -d "/home/ubuntu/app" ]; then
+              cd /home/ubuntu/app
               git pull origin main
             else
               echo "Directory not found! Cloning repository..."
               cd /home/ubuntu
-              git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git your-app-repo
-              cd your-app-repo
+              git clone https://github.com/PrithvirajBhavsar/node-action-app.git app
+              cd app
             fi
             
             # Pull the fresh app image from Docker Hub
