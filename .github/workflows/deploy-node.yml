@@ -45,18 +45,18 @@ jobs:
               git clone https://github.com/PrithvirajBhavsar/node-action-app.git app
               cd app
             fi
-            
+
             # Stop and remove old containers
-            docker compose down
+            docker-compose down
             
             # Pull the absolute latest images (App + Mongo)
-            docker compose pull
+            docker-compose pull
             
             # Prune dangling/unused images to save disk space
             docker image prune -f
             
             # Start fresh containers
-            docker compose up -d --remove-orphans
+            docker-compose up -d --remove-orphans
 
             # Ensure Nginx is running
             sudo systemctl restart nginx
