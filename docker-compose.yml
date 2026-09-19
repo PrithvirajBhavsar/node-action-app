@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: $${{ secrets.DOCKER_USERNAME }}/app:latest
+    image: prithviraj0202/app:latest
     container_name: app-container
     restart: unless-stopped
     ports:
